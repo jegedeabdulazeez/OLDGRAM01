@@ -1,0 +1,84 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto", sans-serif;
+}
+.center_display{
+    margin: 0px auto;
+    width: 50%;
+}
+
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #C6C6C6;
+    margin: 4px 1px;
+    width: 100%;
+}
+.icon{
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+    margin: 4px;
+    cursor: pointer;
+}
+.main_logo{
+    height: 100px;
+    width: 150px;
+}
+p{
+    font-weight: 900;
+    font-size: 17px;
+    padding: 2px;
+}
+span{
+    font-weight: 400;
+}
+.profile_sec{
+    display: flex;
+    gap: 20px;
+}
+.img {
+  max-width: 100%;
+  height: auto;
+}
+.img:hover{
+    border: 1px solid white;
+    box-shadow: 1px 1px 3px 4px grey;
+    cursor: pointer;
+    transform: scale(1.001);
+}
+.hoverable:hover{
+    box-shadow: 4px -3px 15px 4px black;
+    opacity: 0.83;
+    transform: scale(1.05);
+    border: 1px solid whitesmoke;
+}
+.heart {
+    transition: transform 0.2s ease;
+}
+.heart.liked {
+    transform: scale(1.2);
+}
+main_img_sec{
+  position: relative; /* so the pop-heart can be positioned inside it */
+  display: inline-block;
+}
+
+.pop-heart {
+  position: absolute;      /* allows heart to appear over the image */
+  top: 80%; left: 50%;     /* center of the post */
+  width: 100px;             /* size of the heart */
+  transform: translate(-50%, -50%) scale(0); /* start hidden & small */
+  opacity: 0;              /* invisible at start */
+  pointer-events: none;    /* doesn't block clicks */
+  transition: transform 0.3s ease-out, opacity 0.2s ease-out;
+   mix-blend-mode: multiply;  /* smooth animation */
+}
+
+.pop-heart.show {
+  transform: translate(-50%, -50%) scale(2.5); /* grow bigger */
+  opacity: 1;      
+   mix-blend-mode: multiply;                            /* fade in */
+}
