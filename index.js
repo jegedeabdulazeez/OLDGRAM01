@@ -17,7 +17,7 @@ const posts = [
         comment: "i'm feelin a bit stressed tbh",
         likes: 4
     },
-        {
+    {
         name: "Joseph Ducreux",
         username: "jd1735",
         location: "Paris, France",
@@ -28,68 +28,76 @@ const posts = [
     }
 ]
 
-let incrementLk = 0
- let incFun = document.querySelectorAll(".increment-el")
- let myLikes = document.getElementById("dynamic-lk")
- let popHeart = document.querySelector(".pop-heart")
- let heartEl = document.querySelector(".heart")
-let renderEl = document.getElementById("render-el")
+// Render posts and attach per-post listeners (fixed issues)
+const renderEl = document.getElementById("render-el")
+if (!renderEl) {
+  console.error("render-el not found in DOM")
+} else {
+  renderEl.innerHTML = "" // clear before rendering
 
+  posts.forEach((post, idx) => {
+    const container = document.createElement("div")
+    container.className = "center_display"
 
-
-
- incFun.forEach(item => {
-     item.addEventListener("dblclick", function(){
-        console.log("double click works.")
-          heartEl.classList.toggle("likes");
-       if(heartEl.classList.contains("likes")){
-             heartEl.src = "/images/red_heart_icon.png";
-          incrementLk += 1
-              popHeart.classList.add("show");  // trigger heart animation
-
-                setTimeout(() => {
-             popHeart.classList.remove("show"); // hide heart after 0.6s
-                }, 600);
-        
-              }
-                   else{
-                         heartEl.src = "/images/icon-heart.png";
-                       incrementLk -= 1
-            
-                 }
-                       myLikes.textContent = incrementLk   
-                       });
-                  });
-                  
-                  
-// with this i.ve looped through the post.
-posts.forEach(display) 
-
-// i've gotten my hands on the array function
-function display(Element){
-    renderEl.innerHTML +=`
-     <div class="center_display">
-        <main>
+    container.innerHTML = `
+      <main>
         <section class="profile_sec">
-        <img  src= ${Element.avatar} alt="avater"  class="icon hoverable" >
-        <p>${Element.username}<br><span>${Element.location}</span> </p>
-        </section >
-        <section class="main_img_sec">
-        <img src= ${Element.post} alt="a portriat by Vincent van gogh."  class="img increment-el" >
-        <img src="/images/big-ahh-heart.jpg" alt="liked post."  class="pop-heart" >
+          <img src="${post.avatar}" alt="avatar" class="icon hoverable">
+          <p>${post.username}<br><span>${post.location}</span></p>
         </section>
-        <img src="/images/icon-heart.png" alt="heart icon" class="icon increment-el heart">
-        <img src="/images/icon-comment.png" alt="comment" class="icon hoverable">
-        <img src="/images/icon-dm.png" alt="share" class="icon hoverable">
-        <p>likes: <span id="dynamic-lk"></span> </p>
-        <p>just took a few mushrooms lol</p>`
-    
+        <section class="main_img_sec">
+          <img src="${post.post}" alt="${post.name} post" class="img post-img" data-index="${idx}">
+          <img src="images/big-ahh-heart.jpg" alt="liked post" class="pop-heart pop-heart-${idx}">
+        </section>
+        <img src="images/icon-heart.png" alt="heart icon" class="icon heart-icon" data-index="${idx}">
+        <img src="images/icon-comment.png" alt="comment" class="icon hoverable">
+        <img src="images/icon-dm.png" alt="share" class="icon hoverable">
+        <p>likes: <span class="dynamic-lk" data-index="${idx}">${post.likes}</span></p>
+        <p>${post.comment}</p>
+      </main>
+    `
+
+    renderEl.appendChild(container)
+
+    // Elements for this post
+    const postImg = container.querySelector(".post-img")
+    const heartIcon = container.querySelector(".heart-icon")
+    const likesEl = container.querySelector(".dynamic-lk")
+    const popHeart = container.querySelector(".pop-heart")
+
+    // Per-post state
+    let liked = false
+    let likesCount = post.likes
+
+    function updateUI() {
+      likesEl.textContent = likesCount
+      heartIcon.src = liked ? "images/red_heart_icon.png" : "images/icon-heart.png"
+      heartIcon.classList.toggle("likes", liked)
+    }
+    updateUI()
+
+    // Double-click on image to like (only adds like if not already liked; shows pop animation)
+    postImg.addEventListener("dblclick", () => {
+      if (!liked) {
+        liked = true
+        likesCount += 1
+        popHeart.classList.add("show")
+        setTimeout(() => popHeart.classList.remove("show"), 600)
+        updateUI()
+      }
+    })
+
+    // Click on heart to toggle like
+    heartIcon.addEventListener("click", () => {
+      liked = !liked
+      likesCount += liked ? 1 : -1
+      updateUI()
+    })
+  })
 }
 
-// creating my increment function
 
 
 
 
- 
 
